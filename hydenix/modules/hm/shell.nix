@@ -226,6 +226,22 @@ in
           bindkey '\e[F' end-of-line
         '')
 
+        # needs to be sourced after 550
+        (lib.mkOrder 910 ''
+          # Source the rest of the functions
+          if [[ -d ~/.config/zsh/functions ]]; then
+              for file in ~/.config/zsh/functions/*.zsh; do
+                  [[ -f "$file" ]] && source "$file"
+              done
+          fi
+
+          if [[ -d ~/.config/zsh/completions ]]; then
+              for file in ~/.config/zsh/completions/*.zsh; do
+                  [[ -f "$file" ]] && source "$file"
+              done
+          fi
+        '')
+
         # Regular initialization content
         ''
           ${lib.optionalString cfg.pokego.enable ''
@@ -362,10 +378,10 @@ in
         ".config/zsh/functions/duf.zsh".source = "${pkgs.hydenix.hyde}/Configs/.config/zsh/functions/duf.zsh";
         ".config/zsh/functions/error-handlers.zsh".source = "${pkgs.hydenix.hyde}/Configs/.config/zsh/functions/error-handlers.zsh";
         ".config/zsh/functions/eza.zsh".source = "${pkgs.hydenix.hyde}/Configs/.config/zsh/functions/eza.zsh";
-        ".config/zsh/functions/fzf.zsh".source = "${pkgs.hydenix.hyde}/Configs/.config/zsh/functions/fzf.zsh";
         ".config/zsh/functions/kb_help.zsh".source = "${pkgs.hydenix.hyde}/Configs/.config/zsh/functions/kb_help.zsh";
 
-        # We are not including any of these configurations as they are part of the existing zsh options
+        # We are not including any of these configurations as they are part of the existing zsh home-manager options
+        # ".config/zsh/functions/fzf.zsh".source = "${pkgs.hydenix.hyde}/Configs/.config/zsh/functions/fzf.zsh";
         # ".config/zsh/.zshenv".source = "${pkgs.hydenix.hyde}/Configs/.config/zsh/.zshenv";
         # ".config/zsh/user.zsh".source = "${pkgs.hydenix.hyde}/Configs/.config/zsh/user.zsh";
         # ".config/zsh/prompt.zsh".source = "${pkgs.hydenix.hyde}/Configs/.config/zsh/prompt.zsh";
